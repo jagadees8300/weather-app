@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body { 
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #333;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center; 
+            margin: 50px; 
+            border : black 2px solid;
+            border-radius : 10px;
+        }
+        button {
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .light-mode {
+            background-color: white;
+            color: black;
+        }
+        .container { 
+            max-width: 
+            400px; 
+            margin: auto; 
+            padding-right : 30px;
+        }
+        input{ 
+            margin-top: 10px; 
+            padding: 10px; 
+            width: 100%; 
+        }
+        button{
+            margin-top: 10px; 
+            padding: 10px; 
+            width: 425px;
+            margin : 20px 0px 20px 0px;
+        }
+        span{
+            border :black 1px solid;
+            margin : 10px 30px 10px 30px;
+            padding : 5px 10px 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="toggleMode()">Toggle Dark/Light Mode</button>
+    <div class="container">
+        <h1>Weather App</h1>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <button type="submit">Get Weather</button>
+        </form>
+        {% if weather %}
+            <h2>{{ weather.name }}, {{ weather.sys.country }}</span></h2>
+            <p>Latitude:           <span>{{ weather.coord.lat }}</span> </p>
+            <p>Longitude:          <span>{{ weather.coord.lon }}</span> </p>
+            <p>City ID:            <span>{{ weather.id }}</span> </p>
+            <p>Pressure:           <span>{{ weather.main.pressure }}</span> </p>
+            <p>Sea level:          <span>{{ weather.main.sea_level }} ms</span></p>
+            <p>Ground level:       <span>{{ weather.main.grnd_level }} ms</span></p>
+            <p>Maximum Temperature:<span>{{ weather.main.temp_min }} °C</span></p>
+            <p>Temperature:        <span>{{ weather.main.temp }} °C</span></p>
+            <p>Minimum Temperature:<span>{{ weather.main.temp_max }} °C</span></p>
+            <p>Humidity:           <span>{{ weather.main.humidity }} °C</span></p>
+            <p>Speed:              <span>{{ weather.wind.speed }} km/hr</span></p>
+            <p>Weather:            <span>{{ weather.weather.0.description }}</span></p>
+            <p>Timezone:           <span>{{ weather.timezone }}</span></p>
+        {% elif error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    </div>
+    <script>
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+        }
+    </script>
+</body>
+</html>
